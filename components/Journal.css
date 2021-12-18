@@ -1,0 +1,223 @@
+#journal {
+  text-align: center;
+}
+
+#journal img#title {
+  margin: 2em 0 1em;
+  width: auto;
+  height: auto;
+  max-height: 26vh;
+  max-width: 30%;
+  min-height: 15vh
+}
+
+#journal h2 {
+  font-size: 180%;
+  font-weight: bold;
+  width: 10em;
+  border-bottom: 1px solid #aaa;
+  padding: 0.1em;
+  margin-bottom: 0em;
+}
+
+#journal .title-explanation {
+  display: inline-block;
+  font-size: 90%;
+  margin: .2em .2em 0em;
+  font-style: italic
+}
+
+#synthese {
+  width: 95%;
+  margin: 0 auto;
+}
+#unknown-alert {
+  width: 60%;
+  margin: 4em auto;
+}
+
+#visualisations {
+  text-align: left;
+  display: flex;
+  margin: 2em auto;
+  justify-content: space-between;
+}
+
+#visualisations > section {
+  margin-right: 5em;
+}
+
+
+@media only screen and (max-width : 768px) {
+  #visualisations {
+    flex-wrap: wrap;
+
+  }
+  #visualisations > section {
+    width: 90%;
+  }
+}
+
+
+
+#actionnariat {
+
+}
+
+#interests {
+
+}
+
+#interests > ul {
+  padding: 0;
+  margin: 3em 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 85%;
+}
+
+#interests > ul > li {
+  margin: 0 1em 3em;
+}
+
+#interests li {
+
+}
+#interests > ul > li {
+  color: #333;
+}
+#interests > ul > li > h3 {
+  /*text-align: center;*/
+  line-height: 2em;
+  margin-bottom: .3em;
+  color: black;
+  /*text-transform: uppercase;*/
+  font-weight: 600
+}
+#interests > ul > li > ul {
+  background: white;
+  padding: 1em;
+  margin: 0;
+  font-size: 100%;
+  border: 1px solid black;
+  box-shadow: 0 3px 10px rgba(0,0,0,.2);
+}
+
+#interests li img {
+  vertical-align: middle;
+  border: 3px solid white;
+  background: white;
+}
+#interests #subvention img {
+  margin-right: 1em;
+}
+#interests #companies img {
+  display: inline;
+}
+#interests .wiki-link-name {
+  margin: .3em;
+}
+#interests .linkType {
+  font-style: italic;
+  font-size: 85%;
+  color: #888;
+  margin-left: 1em;
+}
+#interests li ul {
+  padding-left: 0em;
+}
+
+#devise {
+  font-style: italic;
+  width: 100%;
+  color: #666;
+  display: inline-block;
+  font-size: 110%;
+}
+
+#devise .quote {
+  font-size: 150%;
+}
+
+#devise .quote:last-child {
+  line-height: .8em;
+  position: relative;
+  top: .1em;
+}
+
+#devise #since {
+  margin-left: 10em;
+}
+
+#toGalaxy,
+#toSynthese {
+  font-weight: bold;
+  background: #333;
+  color: white;
+}
+#toGalaxy {
+  display: inline-block;
+  padding: .2em 1.6em;
+  margin: 0 auto .6em;
+  float: right;
+  text-align: right;
+  box-shadow: 0 3px 10px rgba(0,0,0,.2);
+  background: #333;
+}
+.aires {
+  clear: both;
+}
+#toGalaxy img {
+  width: 2em;
+  display: inline;
+  margin-right: 1em;
+  vertical-align: middle;
+}
+#toSynthese {
+  padding: 1em 2em;
+  font-size: 120%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+#toGalaxy a,
+#toSynthese a {
+  color: white;
+  text-decoration: none;
+}
+/*
+
+.switch-explanation {
+  font-size: 65%;
+  font-weight: 400;
+}*/
+
+
+#interests h3 {
+  margin-top: 0;
+}
+#interests .badge {
+  font-size: 95%;
+  border-radius: 3px;
+  display: inline-block;
+  font-weight: 400;
+  padding: 0 .3em;
+  margin: .5em .6em .5em 0;
+}
+#interests .badge i {
+  color: black;
+  margin-right: .3em;
+  width: 1.2em;
+  text-align: center;
+  padding: .1em .15em;
+  border: 2px solid black;
+  border-radius: 3px;
+}
+#fortune, #sectors {
+  max-width: 15em;
+}
+
+#companies li {
+
+}

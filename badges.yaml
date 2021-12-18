@@ -1,0 +1,28 @@
+# Donner des couleurs ou des icônes aux badges de la page /journal
+
+cent-millionnaires:
+  icône: eur
+  couleur1: '#83703D'
+  couleur2: '#DCBF7B'
+milliardaires:
+  icône: eur
+  couleur1: '#B02911'
+  couleur2: '#EA8302'
+luxe:
+  icône: diamond
+télécoms:
+  icône: phone-square
+finance:
+  icône: credit-card
+armes:
+  icône: fighter-jet
+aviation:
+  icône: plane
+cosmétiques:
+  icône: shower
+médias:
+  icône: newspaper-o
+défaut:
+  icône: circle
+  couleur1: '#748892'
+  couleur2: '#A4C8DA'

@@ -1,0 +1,84 @@
+
+.aires {
+  position: relative;
+  background: black;
+  box-shadow: 0 3px 10px rgba(0,0,0,.2);
+}
+
+.aires .node {
+  box-sizing: border-box;
+  position: absolute;
+  overflow: hidden;
+  background: white;
+}
+
+
+.aires .node .nodeImage {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.aires .node-details {
+  background: grey;
+}
+
+.aires .text-image {
+  font-weight: 300;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100%;
+  padding: 0 1em;
+}
+
+.aires .text-image .aire-text,
+.aires .text-image .wiki-link-name {
+  /*font-size: 180%;*/
+  padding-left: .3em;
+  text-transform: uppercase;
+}
+.aires .text-image.needsVerticalText .aire-text,
+.aires .text-image.needsVerticalText .wiki-link-name {
+  writing-mode: vertical-rl;
+}
+
+.aires .label {
+  color: black;
+  background: white;
+  padding: 0 .3em;
+  position: absolute;
+  font-size: 150%;
+}
+
+.aires .name.label i {
+  margin-left: .6em;
+}
+
+.aires .name.label {
+  top: 0;
+  left: 0;
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+}
+.aires .value.label {
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+}
+.aires .name .wiki-link-name {
+  left: 0;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.aires .wiki-link-name:hover {
+  background: black;
+  color: white;
+}
+.aires .value {
+  font-size: 150%;
+  font-weight: 800;
+  bottom: 0;
+  right: 0;
+}

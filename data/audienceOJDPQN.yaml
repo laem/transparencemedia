@@ -1,0 +1,13 @@
+---
+- node: w/Le_Figaro
+  v: 317614
+- node: w/Le_Monde
+  v: 274887
+- node: w/Le_Parisien
+  v: 155314
+- node: w/Les_Échos
+  v: 124422
+- node: w/Libération_(journal)
+  v: 96780
+- node: w/La_Croix
+  v: 93668

@@ -1,0 +1,28 @@
+article .text {
+  width: 40%;
+  margin: 5% auto;
+  font-size: 130%;
+}
+
+article h1 {
+	/*color: #42C299;*/
+}
+
+article h2 {
+  margin-top: 1.5em;
+}
+
+#depuis1932 {
+  margin-top: 5em;
+  color: #888;
+  font-weight: 200;
+  font-style: italic;
+  font-size: 85%;
+  border: 1px solid #ddd;
+  border-left: none;
+  border-right: none;
+  padding: .4em 0;
+}
+#depuis1932 i {
+  color: #ddd
+}

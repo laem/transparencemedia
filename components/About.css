@@ -1,0 +1,11 @@
+#about .text,
+#contribute .text {
+  width: 34%;
+  margin: 5% auto;
+  font-size: 130%;
+}
+
+
+#about, #contribute h1 {
+	color: #42C299
+}

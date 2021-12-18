@@ -1,0 +1,62 @@
+.vignette.big {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  min-width: 10em;
+  margin: 3vw;
+  transition: background .2s ease-in;
+}
+
+
+.answerVignettes {
+  width: 5em;
+  margin: 1.5em auto;
+  padding: 0 1em;
+  border-left: 1px solid #ddd;
+}
+.vignette.small {
+  opacity: .75;
+  text-align: left;
+  margin-top: 3vh;
+  transition: opacity .1s;
+}
+.vignette.small:hover {
+  opacity: 1;
+}
+.vignette.small img {
+  width: 100%;
+}
+
+
+.vignette.brouillon {
+  border: 10px dashed red;
+}
+
+
+.vignette:hover {
+  background: #f8f8f8;
+}
+
+.vignette.big::before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.vignette img {
+  vertical-align: middle;
+  z-index: 1;
+  width: 10vw;
+  filter: grayscale(100%);
+  transition: .6s;
+}
+
+.vignette img:hover {
+  filter: none;
+}
+
+.vignette h3 {
+  position: absolute;
+  top: .2em;
+}

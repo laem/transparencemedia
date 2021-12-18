@@ -1,0 +1,30 @@
+rules:
+  indent:
+    - 1
+    - tab
+  linebreak-style:
+    - 2
+    - unix
+  semi:
+    - 1
+    - never
+  no-unused-vars: 1
+  no-console: 1
+  no-global-assign: 0
+  no-unsafe-negation: 0
+  react/jsx-uses-vars: 2
+  react/jsx-uses-react: 2
+
+parser: babel-eslint
+
+plugins:
+  - react
+env:
+  browser: true
+  commonjs: true
+  es6: true
+extends:
+  - eslint:recommended
+parserOptions:
+  ecmaFeatures:
+jsx: true
