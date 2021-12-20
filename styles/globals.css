@@ -14,3 +14,181 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+/* Home -------------------------------------------------------------------------------------------------------------------------------------------- */
+
+/* Header */
+#Home .large-header {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  z-index: 1;
+  background-size: cover;
+}
+
+#Home .large-header:before {
+  content : "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+  background: radial-gradient( circle at center, rgba(255, 255, 255, 0.95) 45%, rgba(0, 0, 0, 0) 170%);
+  opacity: 0;
+  z-index: -11;
+
+  transition: opacity 1s ease-in-out;
+}
+
+#Home .large-header.end:before {
+  opacity: 1;
+}
+
+#home-text {
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.large-header.end #home-text {
+  opacity: 1
+}
+
+#Home .main-title {
+  color: #222;
+  text-align: center;
+  margin: 20vh auto 6vh;
+  /* text-transform: uppercase; */
+  font-size: 400%;
+  /* letter-spacing: 0.1em; */
+  font-weight: bold;
+  border-bottom: 3px solid #444;
+  /*background: #ccc;*/
+  /* display: inline-block; */
+  /* text-align: center; */
+  width: 14em;
+}
+
+
+
+#Home p {
+  width: 35em;
+  font-size: 140%;
+  margin: 1em auto;
+  font-weight: 300;
+  color: black;
+  z-index: 90;
+}
+
+#Home #avertissement {
+  margin-top: 4em;
+  font-style: italic;
+  font-size: 120%;
+}
+
+#action {
+  font-size: 120%;
+  font-weight: 600;
+  padding: .6em 1.2em;
+  text-decoration: none;
+  background: #42C299;
+  color: white;
+  border-radius: 5px;
+  margin: 2.5em auto 1em;
+  display: block;
+  text-align: center;
+  width: 10em;
+  box-shadow: 0 3px 10px rgba(0,0,0,.2);
+}
+
+#action:hover {
+  background: rgba(66, 194, 153, 0.9)
+}
+
+
+#about-link {
+  z-index: 30000;
+  font-size: 150%;
+  position: absolute;
+  right: 1.5em;
+  bottom: 1em;
+}
+
+/* Menu + bandeau ------------------------------------------------------------------------------------------------------------------------------ */
+
+#bandeau {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 53em;
+  margin: 0 auto;
+  background: white;
+  z-index: 1000000;
+  padding: .3em;
+  font-weight: 600;
+  font-size: 110%;
+  color: #222;
+  border: 2px solid #222;
+  border-bottom: none;
+  border-top-right-radius: .3em;
+  border-top-left-radius: .3em;
+  box-shadow: 2px -7px 20px 0px rgba(0,0,0,.2)
+}
+
+
+/* main */
+
+.main {
+  width: 100%;
+  height: 100%;
+  color: #333;
+  font-size: .8vw;
+
+  /* TODO : try font-size: calc(11px + .5vw) for bigger fonts on mobiles ? */
+
+}
+
+@media only screen and (max-width : 768px) {
+  .main  {
+    font-size: 1.3vw;
+  }
+}
+
+
+
+#menu {
+  z-index: 900000;
+  position: absolute;
+  left: 0; top: 0;
+  padding-left: 1em;
+  margin: 1em 0;
+}
+#menu li {
+  display: inline-block;
+  margin: 0 1vw;
+  text-align: center;
+  font-weight: 600;
+  color: white;
+}
+#menu a {
+  font-size: 1.3vw;
+  color: inherit;
+  text-decoration: none;
+  /*text-transform: uppercase;*/
+}
+#menu a img {
+  height: 7vh;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#home {
+  font-size: 400%;
+  color: #222;
+}
