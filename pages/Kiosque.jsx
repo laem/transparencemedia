@@ -1,7 +1,8 @@
 import React from "react"
+import Kiosque from "../components/Kiosque"
 
 function KiosquePage() {
-  return <h2>Kiosque</h2>
+  return <Kiosque />
 }
 
 export default KiosquePage

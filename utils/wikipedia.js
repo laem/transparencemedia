@@ -1,9 +1,7 @@
-import fetchJsonp from "fetch-jsonp"
-
 /* Au sujet des images des infobox Wikipedia
 --------------------
 
-Ce serait très cool si toutes les images étaient récupérées avec l'API Wikipedia. Sauf qu'aujourd'hui, l'API 'pageimages' ne renvoit pas les pageimages "non-free"... à voir si ça évolue...
+Ce serait très cool si toutes les images étaient récupérées avec l'API Wikipedia. Sauf qu'aujourd'hui, l'API 'pageimages' ne renvoie pas les pageimages "non-free"... à voir si ça évolue...
 
 On a donc un petit script maison bricolé qui récupère l'img URL.
 
@@ -11,13 +9,13 @@ Les images et textes d'article sont stockés dans un cache global, 'wikiCache', 
 
 */
 
-export let infoboxImageUrl = (wId) =>
+export const infoboxImageUrl = (wId) =>
   Promise.all([
     // Looks like we must use two wikipedia APIs to get both the page HTML and the extract
     new Promise(
       (resolve) =>
         // 1. Just get the page HTML content throught the API
-        fetchJsonp("https://fr.wikipedia.org/w/api.php?action=parse&format=json&prop=text&redirects=true&page=" + wId)
+        fetch("https://fr.wikipedia.org/w/api.php?action=parse&format=json&prop=text&redirects=true&page=" + wId)
           .then((res) => res.json())
           .then(({ parse: { text } }) => {
             let html = text["*"],
@@ -35,7 +33,7 @@ export let infoboxImageUrl = (wId) =>
     ),
     new Promise(
       (resolve) =>
-        fetchJsonp(
+        fetch(
           "https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&rawcontinue=&redirects=true&titles=" +
             wId,
         )
@@ -48,11 +46,12 @@ export let infoboxImageUrl = (wId) =>
     ),
   ]).then(([imgP, contentP]) => ({ ...imgP, ...contentP }))
 
-window.wikiCache = {}
+export const cacheWikiPages = (nodes) => {
+  window.wikiCache = {}
 
-export let cacheWikiPages = (nodes) =>
-  Promise.all(
+  return Promise.all(
     nodes
       .filter(({ id }) => window.wikiCache[id] === undefined && id.indexOf("w:") >= 0)
       .map(({ id }) => infoboxImageUrl(id.replace("w:", "")).then((res) => (window.wikiCache[id] = res))),
   )
+}

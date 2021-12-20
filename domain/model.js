@@ -2,48 +2,45 @@
 		C'est ici que les données des médias sont analysées.
  ********************/
 
-import nodes from './data/entités.yaml'
-import types from './data/types.yaml'
-import R from 'ramda'
+import nodes from "../data/entités.yaml"
+import types from "../data/types.yaml"
+import R from "ramda"
 
 /***********************
 		Model methods
  ***********************/
 
-let nodeFromId = id => nodes.find(node => node.id == id)
+const nodeFromId = (id) => nodes.find((node) => node.id === id)
 
+const nodeName = ({ nom, id }) =>
+  nom ||
+  // Remove possible wikipedia prefix
+  id
+    .replace("w:", "")
+    //turn _ to spaces
+    .replace(/_/g, " ")
 
-let nodeName = ({nom, id}) => nom ||
-	// Remove possible wikipedia prefix
-	id.replace('w:', '')
-	//turn _ to spaces
-	.replace(/_/g, ' ')
+const nodeNameFromId = (id) => {
+  console.log("dans nodeNameFromId", id)
 
-
-let nodeNameFromId = R.pipe(
-	nodeFromId,
-	nodeName
-)
-
-
-let nodeHasType = type => node =>
-	node.type && node.type == type ||
-	node[type]
-
-// Types can be defined as strings (shortcut) or objects
-let nodeType = node => {
-	let typeName = types.find(t => node[t] || node.type === t)
-	return [typeName, node[typeName] || {}]
+  return R.pipe(nodeFromId, nodeName)
 }
 
-let entitiesByType = type =>
-	types.includes(type) ?
-		nodes.filter(nodeHasType(type))
-	: do {throw "Oups ! Ce type n'existe pas"}
+const nodeHasType = (type) => (node) => (node.type && node.type === type) || node[type]
 
+// Types can be defined as strings (shortcut) or objects
+const nodeType = (node) => {
+  const typeName = types.find((t) => node[t] || node.type === t)
+  return [typeName, node[typeName] || {}]
+}
 
-let getInterestingStuff = initialNodeId => {
-	/* Nous voulons extraire
+function entitiesByType(type) {
+  if (types.includes(type)) return nodes.filter(nodeHasType(type))
+  throw new Error("Oups ! Ce type n'existe pas")
+}
+
+const getInterestingStuff = (initialNodeId) => {
+  /* Nous voulons extraire
 
 	1) une liste plate des actionnaires physiques finaux,
 		et leur part respective dans l'entité initiale. Ils peuvent être :
@@ -60,195 +57,189 @@ let getInterestingStuff = initialNodeId => {
 	3) un graphe du monde de l'entité (nodes & links)
 
 	*/
-	let results = {finalHolders: [], interests: [], nodes: {}, links: []}
+  const results = { finalHolders: [], interests: [], nodes: {}, links: [] }
 
-	getParentsRecursive(initialNodeId, {id: initialNodeId}, 100, results)
-	return results
+  getParentsRecursive(initialNodeId, { id: initialNodeId }, 100, results)
+  return results
 }
 
 /* Recursive function */
 function getParentsRecursive(initialNodeId, partialNode, nodeShare, results) {
+  let node = nodeFromId(partialNode.id)
 
-	let node = nodeFromId(partialNode.id)
+  if (!node) node = partialNode
 
-	if (node == null)
-		node = partialNode
+  const name = nodeName(node)
+  const [typeName, type] = nodeType(node)
 
-	let
-		name = nodeName(node),
-		[typeName, type] = nodeType(node)
+  results.nodes[node.id] = node
 
-	results.nodes[node.id] = node
+  if (node.liens) {
+    node.liens.map((lien) => {
+      results.interests.push({
+        type: "company",
+        name: nodeNameFromId(lien?.id),
+        relation: "intérêts croisés",
+        more: lien,
+      })
+      let company = nodeFromId(lien.id),
+        [, companyType] = nodeType(company)
+      companyType.secteurs &&
+        companyType.secteurs.map((sector) =>
+          results.interests.push({
+            type: "sector",
+            sector,
+          }),
+        )
+    })
+  }
 
-	if (node.liens) node.liens.map(lien => {
-		results.interests.push({
-			type: 'company',
-			name: nodeNameFromId(lien.id),
-			relation: 'intérêts croisés',
-			more: lien
-		})
-		let company = nodeFromId(lien.id),
-			[,companyType] = nodeType(company)
-		companyType.secteurs && companyType.secteurs.map(sector =>
-			results.interests.push({
-				type: 'sector',
-				sector
-			})
-		)
-	})
+  /* Un individu ne peut être détenu (en 2017 au moins) : c'est un finalShareholder */
+  if (typeName === "individu") {
+    results.finalHolders.push({
+      ...node,
+      id: node.id,
+      name,
+      value: nodeShare,
+    })
+    type.fortune &&
+      results.interests.push({
+        type: "fortune",
+        fortune: type.fortune,
+        relativeShare: nodeShare,
+        name,
+      })
+    return
+  }
 
-	/* Un individu ne peut être détenu (en 2017 au moins) : c'est un finalShareholder */
-	if (typeName == 'individu') {
-		results.finalHolders.push({
-			...node,
-			id: node.id,
-			name,
-			value: nodeShare
-		})
-		type.fortune && results.interests.push({
-			type: 'fortune',
-			fortune: type.fortune,
-			relativeShare: nodeShare,
-			name
-		})
-		return
-	}
+  // une société connue qui détient un certain pourcentage de l'entité initiale
+  if (typeName === "société") {
+    type.secteurs &&
+      type.secteurs.map((sector) =>
+        results.interests.push({
+          type: "sector",
+          sector,
+        }),
+      )
 
-	// une société connue qui détient un certain pourcentage de l'entité initiale
-	if (typeName == 'société'){
-		type.secteurs && type.secteurs.map(sector =>
-			results.interests.push({
-				type: 'sector',
-				sector
-			})
-		)
+    if (R.path(["société", "connue"])(node) === "oui")
+      results.interests.push({
+        type: "company",
+        name,
+        relation: "détenu",
+        value: nodeShare,
+        more: node,
+      })
+  }
 
-		if (R.path(['société', 'connue'])(node) == 'oui')
-			results.interests.push({
-				type: 'company',
-				name,
-				relation: 'détenu',
-				value: nodeShare,
-				more: node
-			})
-	}
-
-
-	/* si un journal est détenu en partie par un autre journal (qui a donc une page sur ce site),
+  /* si un journal est détenu en partie par un autre journal (qui a donc une page sur ce site),
 		mieux vaut afficher son image avec un lien vers sa page
 	*/
-	if (typeName == 'journal' && initialNodeId != node.id && nodeShare !== 100) {
-		results.finalHolders.push({
-			...node,
-			name,
-			value: nodeShare
-		})
-		let parent = getInterestingStuff(node.id)
-		// Puis l'on ajoute quand même les intérêts,
-		// les noeuds et les liens pour visualiser le graphe complet
-		results.interests = [...results.interests, ...parent.interests]
+  if (typeName === "journal" && initialNodeId !== node.id && nodeShare !== 100) {
+    results.finalHolders.push({
+      ...node,
+      name,
+      value: nodeShare,
+    })
+    let parent = getInterestingStuff(node.id)
+    // Puis l'on ajoute quand même les intérêts,
+    // les noeuds et les liens pour visualiser le graphe complet
+    results.interests = [...results.interests, ...parent.interests]
 
-		results.links = [
-			...results.links,
-			...parent.links
-				.filter(l => !results.links.find(ll => ll.source == l.source && ll.target == l.target))
-				.map(l => ({...l, value: l.value * (nodeShare / 100)}))
-		]
+    results.links = [
+      ...results.links,
+      ...parent.links
+        .filter((l) => !results.links.find((ll) => ll.source === l.source && ll.target === l.target))
+        .map((l) => ({ ...l, value: l.value * (nodeShare / 100) })),
+    ]
 
-		results.nodes = {...results.nodes, ...parent.nodes}
+    results.nodes = { ...results.nodes, ...parent.nodes }
+  }
 
-		return
-	}
+  // passons maintenant aux actionnaires
+  let actionnariat = node.actionnariat
 
-	// passons maintenant aux actionnaires
-	let actionnariat = node.actionnariat
+  if (!actionnariat) {
+    // on doit s'arrêter là : c'est une société dont nous ne connaissons pas les actionnaires physiques : c'est un secret, ou c'est un nombre trop important d'individus
+    results.finalHolders.push({
+      ...node,
+      name,
+      value: nodeShare,
+    })
+  }
 
-	if (actionnariat == null) {
-		// on doit s'arrêter là : c'est une société dont nous ne connaissons pas les actionnaires physiques : c'est un secret, ou c'est un nombre trop important d'individus
-		results.finalHolders.push({
-			...node,
-			name,
-			value: nodeShare
-		})
-		return
-	}
+  // actionnariat peut contenir une phrase d'indication si les actionnaires sont inconnus
+  let actionnaires = R.is(Array)(actionnariat) ? actionnariat : R.is(Object)(actionnariat) && actionnariat.actionnaires
 
-
-	// actionnariat peut contenir une phrase d'indication si les actionnaires sont inconnus
-	let actionnaires =
-		R.is(Array)(actionnariat)
-		? actionnariat
-		: R.is(Object)(actionnariat) && actionnariat.actionnaires
-
-	if (actionnaires) {
-		/* Find shareholders with known ownership percentage,
+  if (actionnaires) {
+    /* Find shareholders with known ownership percentage,
 			compute the formula if any,
 			deduce the remainder */
-		let
-			actionnariatNum = actionnaires.map(actionnaire =>
-				Object.assign(actionnaire, {part: evaluatePart(actionnaire.part)})
-			),
-			known = actionnariatNum.filter(actionnaire => typeof actionnaire.part === 'number'),
-			remainder = 100 - known.reduce((result, value) => result + value.part, 0),
-			respectiveShareOfOthers = remainder / (actionnaires.length - known.length)
+    let actionnariatNum = actionnaires.map((actionnaire) =>
+        Object.assign(actionnaire, { part: evaluatePart(actionnaire.part) }),
+      ),
+      known = actionnariatNum.filter((actionnaire) => typeof actionnaire.part === "number"),
+      remainder = 100 - known.reduce((result, value) => result + value.part, 0),
+      respectiveShareOfOthers = remainder / (actionnaires.length - known.length)
 
-		actionnariatNum.map( actionnaire => {
-			let share = actionnaire.part || respectiveShareOfOthers
-			let absoluteShare = (nodeShare / 100) * share
-			results.nodes[actionnaire.id] = actionnaire
-			results.links.push({
-				source: actionnaire.id,
-				target: node.id,
-				value: share
-			})
-			/* here we go again */
-			getParentsRecursive(initialNodeId, actionnaire, absoluteShare, results)
-		})
-	}
+    actionnariatNum.map((actionnaire) => {
+      let share = actionnaire.part || respectiveShareOfOthers
+      let absoluteShare = (nodeShare / 100) * share
+      results.nodes[actionnaire.id] = actionnaire
+      results.links.push({
+        source: actionnaire.id,
+        target: node.id,
+        value: share,
+      })
+      /* here we go again */
+      getParentsRecursive(initialNodeId, actionnaire, absoluteShare, results)
+    })
+  }
 }
 
-var evaluatePart = p =>
-	typeof p == 'number' ?
-		p : eval(p)
+var evaluatePart = (p) => {
+  console.log("dans evaluatePart", p)
+  return typeof p === "number" ? p : eval(p)
+}
 
 // Pre-compute as this could be a little heavy for the browser if done multiple times
-let journaux =
-	entitiesByType('journal')
-		.map(n => ({
-			...n,
-			derived: getInterestingStuff(n.id)
-		}))
+let journaux = entitiesByType("journal").map((n) => ({
+  ...n,
+  derived: getInterestingStuff(n.id),
+}))
 
-let family = ({id: originalId, derived: {finalHolders: set1}}) => R.pipe(
-	R.reject(R.propEq('id', originalId)),
-	R.reduce((memo, {id: jId, derived: {finalHolders: set2}}) => {
-		let score = set1.reduce( (sum, {id}) => {
-			let tonton = set2.find(R.propEq('id', id))
-			return sum + (tonton ? tonton.value : 0)
-		}, 0) + do {
-			let directLink = set2.find(R.propEq('id', originalId))
-			directLink ? directLink.value : 0
-		}
-		return [...memo, [jId, score]]
-	}, []),
-	R.reject(R.pipe(R.last, R.equals(0)))
-)(journaux)
+let family = ({ id: originalId, derived: { finalHolders: set1 } }) =>
+  R.pipe(
+    R.reject(R.propEq("id", originalId)),
+    R.reduce((memo, { id: jId, derived: { finalHolders: set2 } }) => {
+      let score = set1.reduce((sum, { id }) => {
+        let tonton = set2.find(R.propEq("id", id))
+        return sum + (tonton ? tonton.value : 0)
+      }, 0)
 
+      let directLink = set2.find(R.propEq("id", originalId))
+
+      score += directLink ? directLink.value : 0
+
+      return [...memo, [jId, score]]
+    }, []),
+    R.reject(R.pipe(R.last, R.equals(0))),
+  )(journaux)
 
 /* OUR MODEL
 	has data and handy functions
 */
 let m = {
-	nodeFromId,
-	nodeNameFromId,
-	nodeName,
-	nodeHasType,
-	nodeType,
-	entitiesByType,
-	journaux,
-	findJournal: id => journaux.find(R.propEq('id', id)),
-	family,
-	getInterestingStuff
+  nodeFromId,
+  nodeNameFromId,
+  nodeName,
+  nodeHasType,
+  nodeType,
+  entitiesByType,
+  journaux,
+  findJournal: (id) => journaux.find(R.propEq("id", id)),
+  family,
+  getInterestingStuff,
 }
 
 export default m
