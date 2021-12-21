@@ -80,6 +80,7 @@ export default class Kiosque extends React.Component {
 
   componentDidMount() {
     cacheWikiPages(m.entitiesByType("journal")).then(() => this.setState({ wikiCacheReady: true }))
+    window.model = m
   }
 
   onRadioClick = ({ target: { name, value } }) => {
@@ -97,10 +98,6 @@ export default class Kiosque extends React.Component {
   vignettes(questionItems, size) {
     let { search, filters } = this.state
 
-    console.log(m.entitiesByType("journal"))
-
-    console.log({ questionItems, size, search, filters })
-
     return R.pipe(
       R.filter(
         (e) =>
@@ -111,16 +108,13 @@ export default class Kiosque extends React.Component {
               R.find(([k, v]) => e.journal[k] !== v),
             )(filters)),
       ),
-      //   R.sortBy(R.compose(R.toLower, m.nodeNameFromId, R.prop("id"))),
+      R.sortBy(R.compose(R.toLower, m.nodeNameFromId, R.prop("id"))),
       R.sortBy(R.compose(R.prop("id"))),
       R.map((e) => <Vignette key={e.id} journal={e} size={size} />),
     )(questionItems ? questionItems : m.entitiesByType("journal"))
   }
 
   render() {
-    debugger
-
-    console.log("models", m)
     const { selectedQuestion } = this.state
     const selectedQuestionData = questions.find(({ question }) => question === selectedQuestion)
     const selectedQuestionName = selectedQuestionData?.name

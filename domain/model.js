@@ -20,11 +20,7 @@ const nodeName = ({ nom, id }) =>
     //turn _ to spaces
     .replace(/_/g, " ")
 
-const nodeNameFromId = (id) => {
-  console.log("dans nodeNameFromId", id)
-
-  return R.pipe(nodeFromId, nodeName)
-}
+const nodeNameFromId = R.pipe(nodeFromId, nodeName)
 
 const nodeHasType = (type) => (node) => (node.type && node.type === type) || node[type]
 
@@ -109,7 +105,6 @@ function getParentsRecursive(initialNodeId, partialNode, nodeShare, results) {
         relativeShare: nodeShare,
         name,
       })
-    return
   }
 
   // une société connue qui détient un certain pourcentage de l'entité initiale
@@ -197,10 +192,7 @@ function getParentsRecursive(initialNodeId, partialNode, nodeShare, results) {
   }
 }
 
-var evaluatePart = (p) => {
-  console.log("dans evaluatePart", p)
-  return typeof p === "number" ? p : eval(p)
-}
+var evaluatePart = (p) => (typeof p === "number" ? p : eval(p))
 
 // Pre-compute as this could be a little heavy for the browser if done multiple times
 let journaux = entitiesByType("journal").map((n) => ({
