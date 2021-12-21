@@ -1,12 +1,21 @@
 # transparencemedia
 
-Le code de transparencemedia.fr
+Le code de transparencemedia.fr, issu du projet de @laem.
 
-JS/React/Webpack/YAML
+Technologies : Next.js + Yaml.
 
-Malheureusement, les versions des paquets dans le package.json n'ont pas été fixée, et donc le site ne compile plus via un `yarn && yarn start`. 
+## Installation en local 
 
-Ça reste assez facile à corriger cela dit, je pense.
+```
+yarn 
+yarn dev
+```
+
+Le site est accessible sur : http://localhost:3000/
+
+## Dev tools
+
+Une configuration optimale est présente pour VS Code. Elle permet d'auto save, en lintant et formatant le code avec Prettier.
 
 
 Licence : MIT
