@@ -1,8 +1,12 @@
+import { useRouter } from "next/router"
 import React from "react"
-import Link from "next/link"
+import Journal from "../../components/Journal"
 
-function AboutPage() {
-  return <h2>Journal</h2>
+function JournalPage() {
+  const router = useRouter()
+  const { id } = router.query
+
+  return <Journal id={id} />
 }
 
-export default AboutPage
+export default JournalPage
