@@ -12,11 +12,11 @@ import { cacheWikiPages } from "../utils/wikipedia"
 import chiffres from "dsv-loader?delimiter=;!../data/chiffres-ministère-culture-2015.csv"
 import chiffresAidePostale from "dsv-loader?delimiter=;!../data/compensation-tarif-postal-2014.csv"
 
-let companyImgUrl = "https://upload.wikimedia.org/wikipedia/commons/1/19/Factory_black.png"
+const companyImgUrl = "https://upload.wikimedia.org/wikipedia/commons/1/19/Factory_black.png"
 
 class Company extends React.Component {
   render() {
-    let cache = window.wikiCache[this.props.node.id],
+    const cache = window.wikiCache[this.props.node.id],
       imgUrl = cache && cache.imgUrl
     return <img width="100" src={imgUrl || companyImgUrl} />
   }

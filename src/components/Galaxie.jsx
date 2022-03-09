@@ -45,7 +45,7 @@ class Galaxie extends React.Component {
         )
 
     cacheWikiPages(R.values(nodes)).then(() => {
-      let data = {
+      const data = {
           nodes: R.values(nodes).map((node) => ({
             ...node,
             label: m.nodeName(node),

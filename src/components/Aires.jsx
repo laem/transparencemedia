@@ -63,7 +63,7 @@ export default windowSize(Treemap)
 
 class Cell extends React.Component {
   render() {
-    let { x0, y0, x1, y1, data, journal } = this.props,
+    const { x0, y0, x1, y1, data, journal } = this.props,
       { id, name, value } = data,
       [type] = model.nodeType(data),
       cache = window.wikiCache[id],
@@ -124,14 +124,14 @@ class TextImage extends React.Component {
   }
   elementSize = (el) => [el.offsetWidth, el.offsetHeight]
   adjustTextSize() {
-    let [x1, y1] = this.elementSize(this.div),
+    const [x1, y1] = this.elementSize(this.div),
       [x2, y2] = this.elementSize(this.span)
     ;(x1 < x2 || y1 < y2) && this.setState({ textSize: this.state.textSize - 10 })
   }
   componentDidUpdate = this.adjustTextSize
   componentDidMount = this.adjustTextSize
   render() {
-    let { needsVerticalText, id, name } = this.props
+    const { needsVerticalText, id, name } = this.props
     return (
       <div
         ref={(div) => (this.div = div)}

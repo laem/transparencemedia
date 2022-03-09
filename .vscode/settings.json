@@ -1,9 +1,14 @@
 {
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#19555f" // Change this color!
+    },
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
     "editor.formatOnSave": false,
-    "workbench.colorCustomizations": {
-        "statusBar.background": "#19555f" // Change this color!
-    },
+    "files.exclude": {
+        "**/.history": true,
+        "**/.next": true,
+        "**/node_modules": true,
+    }
 }

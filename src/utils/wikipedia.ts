@@ -1,4 +1,5 @@
 import fetchJsonp from "fetch-jsonp"
+import { stringify } from "querystring"
 
 /* Au sujet des images des infobox Wikipedia
 --------------------
@@ -19,7 +20,7 @@ export const infoboxImageUrl = (wId) =>
       fetchJsonp("https://fr.wikipedia.org/w/api.php?action=parse&format=json&prop=text&redirects=true&page=" + wId)
         .then((res) => res.json())
         .then(({ parse: { text } }) => {
-          let html = text["*"],
+          const html = text["*"],
             // 2. Then find the first image after the infobox keyword
             [, afterInfoboxKeyword] = html.split('class="infobox'),
             [beforeInfoboxTable] = afterInfoboxKeyword.split("<table"),
@@ -30,7 +31,10 @@ export const infoboxImageUrl = (wId) =>
               (url.indexOf("thumb") > -1 ? url.replace("/thumb", "").split("/").slice(0, -1).join("/") : url)
           resolve({ imgUrl: originalImageUrl })
         })
-        .catch((err) => console.error("err", err) || resolve({})),
+        .catch((err) => {
+          console.error("err", err)
+          resolve({})
+        }),
     ),
     new Promise((resolve) =>
       fetchJsonp(
@@ -39,19 +43,25 @@ export const infoboxImageUrl = (wId) =>
       )
         .then((res) => res.json())
         .then(({ query: { pages } }) => {
-          let { extract } = pages[Object.keys(pages)[0]]
+          const { extract } = pages[Object.keys(pages)[0]]
           resolve({ content: extract })
         })
-        .catch((err) => console.error("err", err) || resolve({})),
+        .catch((err) => {
+          console.error("err", err)
+          resolve({})
+        }),
     ),
-  ]).then(([imgP, contentP]) => ({ ...imgP, ...contentP }))
+  ]).then(([imgP, contentP]: [Record<string, string>, Record<string, string>]) => ({ ...imgP, ...contentP }))
 
 export const cacheWikiPages = (nodes) => {
+  // @ts-ignore: TODO refactor with localStorage maybe ?
   window.wikiCache = {}
 
   return Promise.all(
     nodes
+      // @ts-ignore
       .filter(({ id }) => window.wikiCache[id] === undefined && id.indexOf("w:") >= 0)
+      // @ts-ignore
       .map(({ id }) => infoboxImageUrl(id.replace("w:", "")).then((res) => (window.wikiCache[id] = res))),
   )
 }

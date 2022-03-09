@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import "./contribuer.module.css"
 
 function ContributePage() {
@@ -70,7 +70,7 @@ function ContributePage() {
             Si tout ça vous semble trop casse-tête,
             <br />
             écrivez simplement à <i className="fa fa-envelope" aria-hidden="true" />{" "}
-            <span syle={{ fontWeight: "900" }}>contact@transparence.media</span>
+            <span style={{ fontWeight: "900" }}>contact@transparence.media</span>
           </b>{" "}
           .
         </p>

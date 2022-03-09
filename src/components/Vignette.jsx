@@ -15,7 +15,7 @@ export const journalImgSrc = (id) => {
 
 export default class Vignette extends React.Component {
   render() {
-    let { journal, size } = this.props,
+    const { journal, size } = this.props,
       { brouillon } = journal
 
     return (
@@ -32,7 +32,7 @@ export default class Vignette extends React.Component {
   }
 
   imageSrc(id) {
-    let cache = window.wikiCache[id],
+    const cache = window.wikiCache[id],
       imgUrl = cache && cache.imgUrl
 
     return (
