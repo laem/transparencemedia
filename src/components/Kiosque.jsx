@@ -6,7 +6,7 @@ import removeAccents from "remove-accents"
 import m from "../domain/model"
 import Vignette from "./Vignette.jsx"
 import { cacheWikiPages } from "../utils/wikipedia"
-import Filters from "../components/Filters"
+import Filters from "./Filters"
 
 const normalise = (s) => removeAccents(s?.toLowerCase())
 
@@ -31,7 +31,7 @@ const questions = [
     filter: () =>
       reduceByAppending(({ id, actionnariat }) => {
         if (actionnariat && R.is(String)(actionnariat.inconnu)) return "4: Actionnariat inconnu"
-        let { interests } = m.getInterestingStuff(id),
+        const { interests } = m.getInterestingStuff(id),
           fortunes = interests.filter((i) => i.type == "fortune"),
           score = fortunes.reduce((memo, { relativeShare }) => memo + relativeShare, 0)
         return score > 30 ? "1: Fortement" : score > 0 ? "2: Un peu" : "3: Pas du tout"
@@ -47,7 +47,7 @@ const questions = [
     ),
     filter: () =>
       reduceByAppending(({ journal: { revenus } }) => {
-        let r = R.is(String)(revenus) ? [revenus] : revenus
+        const r = R.is(String)(revenus) ? [revenus] : revenus
         return R.equals(["abonnements", "publicité"], r.sort())
           ? "2: publicité et abonnements"
           : R.equals(["publicité"], r)
@@ -84,7 +84,7 @@ export default class Kiosque extends React.Component {
   }
 
   onRadioClick = ({ target: { name, value } }) => {
-    let { filters } = this.state,
+    const { filters } = this.state,
       newFilters = filters[name] === value ? R.dissoc(name)(filters) : R.assoc(name, value)(filters)
 
     this.setState({ filters: newFilters })
@@ -96,7 +96,7 @@ export default class Kiosque extends React.Component {
     })
 
   vignettes(questionItems, size) {
-    let { search, filters } = this.state
+    const { search, filters } = this.state
 
     return R.pipe(
       R.filter(
@@ -118,11 +118,10 @@ export default class Kiosque extends React.Component {
     const { selectedQuestion } = this.state
     const selectedQuestionData = questions.find(({ question }) => question === selectedQuestion)
     const selectedQuestionName = selectedQuestionData?.name
-    const selectedQuestionBackgrounds = selectedQuestionData?.backgrounds
     const selectedQuestionFilter = selectedQuestionData?.filter
 
-    let questionAnswers = selectedQuestionFilter ? R.toPairs(selectedQuestionFilter()) : []
-    let sorted = R.sortBy(R.head)(questionAnswers)
+    const questionAnswers = selectedQuestionFilter ? R.toPairs(selectedQuestionFilter()) : []
+    const sorted = R.sortBy(R.head)(questionAnswers)
 
     return (
       <div id="kiosque">
@@ -133,9 +132,11 @@ export default class Kiosque extends React.Component {
         </div>
         <div id="questions">
           {selectedQuestion ? (
-            <p id="backToQuestionList" onClick={() => this.setState({ selectedQuestion: null })}>
-              <i className="fa fa-undo" aria-hidden="true"></i>&nbsp;&nbsp;revenir à la liste des sujets
-            </p>
+            <button onClick={() => this.setState({ selectedQuestion: null })}>
+              <p id="backToQuestionList">
+                <i className="fa fa-undo" aria-hidden="true"></i>&nbsp;&nbsp;revenir à la liste des sujets
+              </p>
+            </button>
           ) : (
             <p>...ou explorez un sujet :</p>
           )}

@@ -12,13 +12,13 @@ export default class WikiLink extends Component {
   }
 
   render() {
-    let { content, imgUrl, more, hidden } = this.state
-    let { name } = this.props
+    const { content, imgUrl, more, hidden } = this.state
+    const { name } = this.props
     return (
       <span>
-        <span className="wiki-link-name" onClick={() => this.setState({ hidden: false })}>
+        <button className="wiki-link-name" onClick={() => this.setState({ hidden: false })}>
           {name}
-        </span>
+        </button>
         {!hidden && (
           <div className="wiki-link">
             <div className="wiki-link-box">
@@ -42,7 +42,7 @@ export default class WikiLink extends Component {
   }
 
   componentDidMount() {
-    let { wikiId, lang } = this.props
+    const { wikiId, lang } = this.props
     if (wikiId == undefined || lang == undefined) {
       throw "Il y a un bug"
     }

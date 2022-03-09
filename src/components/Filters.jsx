@@ -4,7 +4,7 @@ import React from "react"
 
 function Radio(state, onClick) {
   return function InnerRadio({ name, label, value }) {
-    let osef = Math.random()
+    const osef = Math.random()
     return (
       <div>
         <input type="radio" onClick={onClick} checked={state[name] === value} id={osef} name={name} value={value} />
@@ -15,7 +15,7 @@ function Radio(state, onClick) {
 }
 
 export default function Filters({ state, onClick }) {
-  let AwareRadio = Radio(state, onClick)
+  const AwareRadio = Radio(state, onClick)
   return (
     <ul id="tag-list">
       <li>

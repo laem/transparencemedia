@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+      // baseUrl make that all code is stored in src directory (with the exception of /public)
+      "baseUrl": "src",
+      // paths is useful if you want to use absolute imports
+      "paths": {
+          "@/*": [
+              "*"
+          ],
+      },
+      "target": "es5",
+      "lib": [
+          "dom",
+          "dom.iterable",
+          "esnext"
+      ],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "strict": false,
+      "forceConsistentCasingInFileNames": true,
+      "noEmit": true,
+      "incremental": true,
+      "esModuleInterop": true,
+      "module": "esnext",
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "jsx": "preserve"
+  },
+  "include": [
+      "next-env.d.ts",
+      "src",
+  ],
+  "exclude": [
+      "node_modules"
+  ]
+}

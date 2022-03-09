@@ -1,5 +1,23 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  // Parser to make ESLint able to parse TS files.
+  "parser": "@typescript-eslint/parser",
+  // Bunch of rules.
+  "plugins": ["@typescript-eslint", "jest", "jsx-a11y", "testing-library", "jest-dom"],
+  // Rules to be used.
+  "extends": [
+    "eslint:recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:testing-library/react",
+    // Helper for testing-library.
+    "plugin:jest-dom/recommended",
+    "plugin:jest/recommended",
+    "plugin:@typescript-eslint/recommended",
+    // Need to be last or almost.
+    "next/core-web-vitals",
+    // Priority on prettier to be last and potentially override other rules.
+    "plugin:prettier/recommended"
+  ],
+  // Customize rules.
   "rules": {
     "prettier/prettier": [
       "error",
@@ -8,6 +26,10 @@
         "semi": false,
         "printWidth": 120
       }
-    ]
+    ],
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-console": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn"
+
   }
 }
