@@ -13,10 +13,14 @@
     "check-all": "yarn lint && yarn type-check && yarn test --watchAll=false"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.8.6",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "classnames": "^2.3.1",
     "d3": "^7.2.1",
     "debounce": "^1.2.1",
     "fetch-jsonp": "^1.2.1",
+    "framer-motion": "^6",
     "js-yaml-loader": "^1.2.2",
     "next": "^12.1.0",
     "ramda": "^0.23.0",
