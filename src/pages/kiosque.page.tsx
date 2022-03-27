@@ -1,5 +1,5 @@
 import React from "react"
-import Kiosque from "../components/Kiosque"
+import { Kiosque } from "@/components/Kiosque"
 
 function KiosquePage() {
   return <Kiosque />
