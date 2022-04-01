@@ -1,0 +1,27 @@
+[
+  {
+    "id": "free",
+    "nom": "Free",
+    "secteur": "Telecom",
+    "actionnaires": [
+      {
+        "type": "personne",
+        "id": "xavier-niel"
+      },
+      {
+        "type": "personne",
+        "id": "vincent-bolloré"
+      }
+    ]
+  }, {
+    "id": "le-monde-sarl",
+    "nom": "Le Monde SARL",
+    "secteur": "Télécom",
+    "actionnaires": [
+      {
+        "type": "personne",
+        "id": "untel"
+      }
+    ]
+  }
+]

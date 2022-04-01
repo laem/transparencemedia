@@ -1,0 +1,17 @@
+[
+  {
+    "id": "le-monde",
+    "nom": "Le Monde",
+    "formes": ["journal", "web"],
+    "actionnaires": [
+      {
+        "type": "physique",
+        "id": "xavier-niel"
+      },
+      {
+        "type": "morale",
+        "id": "le-monde-sarl"
+      }
+    ]
+  }
+]

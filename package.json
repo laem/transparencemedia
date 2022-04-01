@@ -10,7 +10,8 @@
     "test": "jest --watch",
     "type-check": "tsc --pretty --noEmit",
     "fresh-install": "rm -rf node_modules/ build/ && yarn",
-    "check-all": "yarn lint && yarn type-check && yarn test --watchAll=false"
+    "check-all": "yarn lint && yarn type-check && yarn test --watchAll=false",
+    "load-data": "NODE_OPTIONS='--experimental-json-modules' node ./scripts/load-data.mjs"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.6",
@@ -50,6 +51,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-testing-library": "^5.0.5",
     "jest": "^27.5.1",
+    "js-yaml": "^4.1.0",
     "prettier": "^2.5.1",
     "prettier-eslint": "^13.0.0",
     "ts-jest": "^27.1.3",
