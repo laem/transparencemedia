@@ -37,3 +37,5 @@ yarn-error.log*
 # package-lock.json is unnecessary since we use yarn.lock
 package-lock.json
 yarn-error.log
+
+tmp/
